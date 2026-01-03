@@ -51,6 +51,8 @@ function addQuote() {
 
   textInput.value = "";
   categoryInput.value = "";
+  postQuoteToServer(newQuote);
+
 }
 
 /* =========================
@@ -191,6 +193,23 @@ async function fetchQuotesFromServer() {
     showRandomQuote();
   } catch (error) {
     console.error("Error fetching quotes:", error);
+  }
+}
+
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quote)
+    });
+
+    const data = await response.json();
+    console.log("Posted to server:", data);
+  } catch (error) {
+    console.error("Error posting quote:", error);
   }
 }
 
