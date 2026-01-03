@@ -155,14 +155,9 @@ function filterQuotes() {
 ========================= */
 
 function syncWithServer() {
-  fetch("https://jsonplaceholder.typicode.com/posts?_limit=1")
-    .then(response => response.json())
-    .then(() => {
-      // Server takes precedence (simulation)
-      saveQuotes();
-      console.log("Data synced with server");
-    });
+  fetchQuotesFromServer();
 }
+
 
 setInterval(syncWithServer, 30000);
 
@@ -178,3 +173,24 @@ newQuoteBtn.addEventListener("click", showRandomQuote);
 
 populateCategories();
 showRandomQuote();
+
+function fetchQuotesFromServer() {
+  return fetch("https://jsonplaceholder.typicode.com/posts?_limit=2")
+    .then(response => response.json())
+    .then(data => {
+      // Simulate server quotes format
+      const serverQuotes = data.map(item => ({
+        text: item.title,
+        category: "Server"
+      }));
+
+      // Server takes precedence
+      quotes = serverQuotes;
+      saveQuotes();
+      populateCategories();
+      showRandomQuote();
+    })
+    .catch(error => {
+      console.error("Error fetching quotes:", error);
+    });
+}
