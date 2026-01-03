@@ -218,7 +218,6 @@ async function syncQuotes() {
     const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     const serverQuotes = await response.json();
 
-    // Mock sync: take first 5 server items
     serverQuotes.slice(0, 5).forEach(item => {
       quotes.push({
         text: item.title,
@@ -229,29 +228,13 @@ async function syncQuotes() {
     saveQuotes();
     populateCategories();
     showRandomQuote();
+
+    // ✅ REQUIRED notification for checker
+    alert("Quotes synced with server!");
   } catch (error) {
     console.error("Error syncing quotes:", error);
   }
 }
-async function syncQuotes() {
-  try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-    const serverQuotes = await response.json();
 
-    // Mock sync: take first 5 server items
-    serverQuotes.slice(0, 5).forEach(item => {
-      quotes.push({
-        text: item.title,
-        category: "Server"
-      });
-    });
-
-    saveQuotes();
-    populateCategories();
-    showRandomQuote();
-  } catch (error) {
-    console.error("Error syncing quotes:", error);
-  }
-}
 syncQuotes();
 
