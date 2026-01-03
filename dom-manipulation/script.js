@@ -174,23 +174,24 @@ newQuoteBtn.addEventListener("click", showRandomQuote);
 populateCategories();
 showRandomQuote();
 
-function fetchQuotesFromServer() {
-  return fetch("https://jsonplaceholder.typicode.com/posts?_limit=2")
-    .then(response => response.json())
-    .then(data => {
-      // Simulate server quotes format
-      const serverQuotes = data.map(item => ({
-        text: item.title,
-        category: "Server"
-      }));
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=2");
+    const data = await response.json();
 
-      // Server takes precedence
-      quotes = serverQuotes;
-      saveQuotes();
-      populateCategories();
-      showRandomQuote();
-    })
-    .catch(error => {
-      console.error("Error fetching quotes:", error);
-    });
+    const serverQuotes = data.map(item => ({
+      text: item.title,
+      category: "Server"
+    }));
+
+    // Server data takes precedence
+    quotes = serverQuotes;
+    saveQuotes();
+    populateCategories();
+    showRandomQuote();
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+  }
 }
+
+
